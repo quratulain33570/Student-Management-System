@@ -10,6 +10,10 @@ def add_student():
         print("Error: Name cannot be empty.\n")
         return
 
+    if not name.replace(" ", "").isalpha():
+        print("Error: Name should contain only letters.\n")
+        return
+
     student_id = input("Enter student ID: ").strip()
 
     if not student_id:
@@ -43,7 +47,6 @@ def add_student():
 
     print("\nStudent added successfully!\n")
 
-
 def view_students():
     """Display all students."""
 
@@ -62,6 +65,15 @@ def view_students():
 
     print()
 
+def find_student_by_id(student_id):
+    """Return student if found, otherwise None."""
+
+    for student in students:
+        if student["id"] == student_id:
+            return student
+
+    return None
+
 
 def search_student():
     """Search for a student by ID."""
@@ -78,16 +90,99 @@ def search_student():
 
     search_id = int(search_id)
 
-    for student in students:
-        if student["id"] == search_id:
-            print("\n===== Student Found =====")
-            print(f"ID: {student['id']}")
-            print(f"Name: {student['name']}")
-            print(f"Roll No: {student['roll_no']}\n")
+    student = find_student_by_id(search_id)
+
+    if student:
+        print("\n===== Student Found =====")
+        print(f"ID: {student['id']}")
+        print(f"Name: {student['name']}")
+        print(f"Roll No: {student['roll_no']}\n")
+    else:
+        print("Student not found.\n")
+def update_student():
+    """Update student information."""
+
+    student_id = input("Enter student ID to update: ").strip()
+
+    if not student_id:
+        print("Error: Student ID cannot be empty.\n")
+        return
+
+    if not student_id.isdigit():
+        print("Error: Student ID must contain only numbers.\n")
+        return
+
+    student_id = int(student_id)
+
+    student = find_student_by_id(student_id)
+
+    if not student:
+        print("Student not found.\n")
+        return
+
+    print("\n===== Current Student Information =====")
+    print(f"ID: {student['id']}")
+    print(f"Name: {student['name']}")
+    print(f"Roll No: {student['roll_no']}")
+
+    print("\n1. Update Name")
+    print("2. Update Roll Number")
+    print("3. Update Both")
+
+    choice = input("Enter your choice: ").strip()
+
+    if choice == "1":
+
+        new_name = input("Enter new name: ").strip()
+
+        if not new_name:
+            print("Error: Name cannot be empty.\n")
             return
 
-    print("Student not found.\n")
+        if not new_name.replace(" ", "").isalpha():
+            print("Error: Name should contain only letters.\n")
+            return
 
+        student["name"] = new_name
+
+        print("Student name updated successfully.\n")
+
+    elif choice == "2":
+
+        new_roll_no = input("Enter new roll number: ").strip()
+
+        if not new_roll_no:
+            print("Error: Roll number cannot be empty.\n")
+            return
+
+        student["roll_no"] = new_roll_no
+
+        print("Roll number updated successfully.\n")
+
+    elif choice == "3":
+
+        new_name = input("Enter new name: ").strip()
+        new_roll_no = input("Enter new roll number: ").strip()
+
+        if not new_name:
+            print("Error: Name cannot be empty.\n")
+            return
+
+        if not new_name.replace(" ", "").isalpha():
+            print("Error: Name should contain only letters.\n")
+            return
+
+        if not new_roll_no:
+            print("Error: Roll number cannot be empty.\n")
+            return
+
+        student["name"] = new_name
+        student["roll_no"] = new_roll_no
+
+        print("Student updated successfully.\n")
+
+    else:
+        print("Error: Invalid choice.\n")
 
 def display_menu():
     """Display the main menu."""
@@ -96,7 +191,8 @@ def display_menu():
     print("1. Add Student")
     print("2. View Students")
     print("3. Search Student")
-    print("4. Exit")
+    print("4. Update Student")
+    print("5. Exit")
 
 
 def main():
@@ -117,6 +213,9 @@ def main():
             search_student()
 
         elif choice == "4":
+            update_student()
+
+        elif choice == "5":
             print("Exiting program...")
             break
 
