@@ -184,6 +184,48 @@ def update_student():
     else:
         print("Error: Invalid choice.\n")
 
+def delete_student():
+    """Delete a student from the system."""
+
+    student_id = input("Enter student ID to delete: ").strip()
+
+    if not student_id:
+        print("Error: Student ID cannot be empty.\n")
+        return
+
+    if not student_id.isdigit():
+        print("Error: Student ID must contain only numbers.\n")
+        return
+
+    student_id = int(student_id)
+
+    student = find_student_by_id(student_id)
+
+    if not student:
+        print("Student not found.\n")
+        return
+
+    print("\n===== Student Found =====")
+    print(f"ID: {student['id']}")
+    print(f"Name: {student['name']}")
+    print(f"Roll No: {student['roll_no']}")
+
+    confirm = input(
+        "\nAre you sure you want to delete this student? (yes/no): "
+    ).strip().lower()
+
+    if confirm in ["yes", "y"]:
+        students.remove(student)
+        print("Student deleted successfully.\n")
+
+    elif confirm in ["no", "n"]:
+        print("Deletion cancelled.\n")
+
+    else:
+        print("Invalid choice. Deletion cancelled.\n")
+
+
+
 def display_menu():
     """Display the main menu."""
 
@@ -192,7 +234,8 @@ def display_menu():
     print("2. View Students")
     print("3. Search Student")
     print("4. Update Student")
-    print("5. Exit")
+    print("5. Delete Student")
+    print("6. Exit")
 
 
 def main():
@@ -216,7 +259,10 @@ def main():
             update_student()
 
         elif choice == "5":
-            print("Exiting program...")
+            delete_student()
+
+        elif choice == "6":
+            print("Thank you for using the Student Management System. Goodbye!")
             break
 
         else:
